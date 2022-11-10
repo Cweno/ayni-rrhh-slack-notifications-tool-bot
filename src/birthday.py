@@ -66,7 +66,7 @@ def saludar(persona:dict):
 
         slack['blocks'][1]['text']['text'] = f':birthday: FELIZ CUMPLEAÑOS {persona["name"].upper()} :birthday:'
         slack['blocks'][3]['text']['text'] =  mensaje.replace('PERSONA', f"<@{persona['slackID']}>")
-        slack['blocks'][3]['accessory']['image_url'] = f"https://{BUCKET_IMAGENES}.s3.us-east-2.amazonaws.com/birthday/{persona['id']}" # NOMBRE
+        slack['blocks'][3]['accessory']['image_url'] = f"https://{BUCKET_IMAGENES}.s3.{os.getenv('REGION')}.amazonaws.com/birthday/{persona['id']}" # NOMBRE
         slack['blocks'][3]['accessory']['alt_text'] = persona["name"].upper()
 
         response = slack_call(slack, WEBHOOK)

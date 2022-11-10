@@ -56,7 +56,7 @@ def anunciar(anuncio:dict):
         
         imagen = dict(IMAGE)
         imagen['title']['text'] = anuncio['name']
-        imagen['image_url'] = f'https://{BUCKET_IMAGENES}.s3.us-east-2.amazonaws.com/announcement/{anuncio["id"]}'
+        imagen['image_url'] = f'https://{BUCKET_IMAGENES}.s3.{os.getenv("REGION")}.amazonaws.com/announcement/{anuncio["id"]}'
         imagen['alt_text'] = anuncio['name']
         slack['blocks'].append(imagen)
 
