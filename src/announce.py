@@ -17,7 +17,9 @@ TEMPLATE = {
 				"emoji": True
 			}
 		}
-	]
+	],
+    'username': 'Anuncios',
+    'icon_emoji': ":loudspeaker:"
 }
 
 SECTION = {

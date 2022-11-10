@@ -18,7 +18,9 @@ TEMPLATE = {
 				"emoji": True
 			}
 		}
-	]
+	],
+    'username': 'Eventos',
+    'icon_emoji': ":calendar:"
 }
 
 SECTION = {
