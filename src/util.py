@@ -1,8 +1,11 @@
 import urllib3
 import json
+import os
+
 from datetime import datetime
 import boto3
 from boto3.dynamodb.conditions import Attr
+
 
 def slack_call(payload:dict, webhook:str):
     try:
@@ -31,7 +34,7 @@ def get_today():
 def get_tabla(name:str):
     try:
         session = boto3.session.Session(
-            region_name = 'us-east-2'
+            region_name = os.getenv('REGION')
         )
         resource = session.resource('dynamodb')
         tabla = resource.Table(name)
