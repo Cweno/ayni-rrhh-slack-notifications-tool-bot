@@ -1,0 +1,59 @@
+service: aynitech-rrhh-slack-notifications-bot
+frameworkVersion: '3'
+configValidationMode: error
+useDotenv: true
+deprecationNotificationMode: warn:summary
+
+provider:
+  name: aws
+  stage: dev
+  region: ${env:REGION}
+  profile: ${env:PROFILE}
+  tags:
+    Environment: ${env:STAGE}
+    Module: ${env:MODULE}
+    Project: ${env:PROJECT}
+    Owner: ${env:OWNER}
+  deploymentBucket:
+    name: ${env:BUCKET_DEPLOYMENT}
+    serverSideEncryption: AES256
+    versioning: true
+  
+functions:
+  bot:
+    name: rrhh-slack-notifications-bot
+    architecture: x86_64
+    handler: src.lambda.handler
+    runtime: python3.8
+    # package:
+    #   patterns:
+    #     - src/*
+    events:
+      - schedule: 
+          rate: cron(0 14 * * ? *)
+          enabled: true
+          name: birthdays-auto-trigger
+          description: daily trigger for birthdays
+      - schedule: 
+          rate: cron(30 13 * * ? *)
+          enabled: true
+          name: events-auto-trigger
+          description: daily trigger for events
+      - schedule: 
+          rate: cron(0 17 * * ? *)
+          enabled: true
+          name: announcements-auto-trigger
+          description: daily trigger for announcements
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Scan"
+          - "dynamodb:GetItem"
+        Resource:
+          - arn:aws:dynamodb:${env:REGION}:${env:ACCOUNT}:table/${env:ANNOUNCEMENTS_TABLE}
+          - arn:aws:dynamodb:${env:REGION}:${env:ACCOUNT}:table/${env:BIRTHDAYS_TABLE}
+          - arn:aws:dynamodb:${env:REGION}:${env:ACCOUNT}:table/${env:EVENTS_TABLE}
+        
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-iam-roles-per-function

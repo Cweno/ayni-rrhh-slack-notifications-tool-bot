@@ -1,0 +1,6 @@
+services:
+  rrhh-notifications-api:
+    path: api
+  rrhh-notifications-bot:
+    path: bot
+  
